@@ -1,16 +1,25 @@
-# Web App de Clima 🌦️
+# ¿Qué tiempo es hoy? 🌦️
 
 <img src="./preview-website.png" alt="Vista previa de la aplicación" width="1000">
 
 ## Descripción
-Esta aplicación web proporciona información sobre el clima actual de una ciudad o país ingresado por el usuario. Utiliza JavaScript puro junto con HTML y CSS para crear una experiencia interactiva y visualmente atractiva. Los datos del clima se obtienen de una API externa y se presentan de manera clara y concisa en la interfaz de usuario.
+Una aplicación web que proporciona información sobre el clima actual de una ciudad ingresado por el usuario. Utiliza JavaScript puro junto con HTML y CSS para crear una experiencia interactiva y visualmente atractiva. Los datos del clima se obtienen de una API externa y se presentan de manera clara y concisa en la interfaz de usuario.
 
 ## Características principales
-- **Búsqueda de clima 🔍:** Los usuarios pueden ingresar el nombre de una ciudad o país para obtener la información meteorológica correspondiente.
+- **Búsqueda de clima 🔍:** Los usuarios pueden ingresar el nombre de una ciudad para obtener la información meteorológica correspondiente.
 - **Datos mostrados 🌍:**
-  - Ciudad o país 🏙️
-  - Temperatura 🌡️ (redondeada a 2 decimales usando `toFixed`)
-  - Descripción del clima ☁️
+  - Ciudad
+  - Temperatura (redondeada a 2 decimales usando `toFixed`)
+  - Sensación térmica
+  - clima
+  - Nubosidad
+  - Humedad
+  - Presión
+  - Nivel del mar
+  - Visibilidad
+  - Velocidad del viento
+  - Dirección del viento
+  - Ráfagas
   
 - **Interactividad 🖱️:**
   - El botón "Enviar" inicia la búsqueda.
@@ -41,7 +50,7 @@ repo/
 ## Cómo usar el repositorio
 1. Clonar el repositorio o descargar los archivos. 📥
 2. Abrir el archivo `index.html` en un navegador web. 🌐
-3. Ingresar el nombre de una ciudad o país en el campo de entrada. 🏙️
+3. Ingresar el nombre de una ciudad en la entrada de búsqueda. 🏙️
 4. Hacer clic en el botón "Enviar". ➡️
 5. Ver la información del clima actualizada en la pantalla. ☀️
 
