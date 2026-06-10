@@ -3,60 +3,79 @@ const apiKey = import.meta.env.VITE_API_KEY;
 const btn = document.getElementById('btn');
 const infoGeneral = document.getElementById('infoWeather')
 const containerWeather = document.getElementById('weather-info')
+const infoWeather1 = document.getElementById('infoWeather1')
+const infoWeather2 = document.getElementById('infoWeather2')
 
 const getWeather = (city) => {
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=es&appid=${apiKey}`)
     .then(res => res.json())
-    .then(data => displayWeather(data))
+    .then(data => {
+
+      if (data.cod !== 200) {
+        infoGeneral.innerHTML =
+          'Información <span style="color: darkred;">NO</span> encontrada.';
+        containerWeather.style.display = 'none';
+        return;
+      }
+
+      infoGeneral.innerHTML = 'Información encontrada exitosamente.';
+      displayWeather(data);
+    })
+    .catch(error => {
+      console.error(error);
+      infoGeneral.innerHTML =
+        'Ocurrió un error al consultar la información.';
+    });
 };
 
 const displayWeather = (data) => {
-  const info1 = document.getElementById('infoWeather1');
-  const info2 = document.getElementById('infoWeather2');
   containerWeather.style.display = 'flex';
-  
-  info1.innerHTML = `
-    Ciudad: ${data.name} 🗺️ <br> Temperatura: ${(data.main.temp - 273.15).toFixed(1)} °C 🌡️<br> Descripción del clima: ${data.weather[0].description} 🌦️ <br>`
-  info2.innerHTML = `Humedad: ${data.main.humidity} % 🍃 <br> Presión: ${Math.round(data.main.pressure)} hPa ⏱️ <br> Nivel del mar: ${Math.round(data.main.sea_level)} m 🌊 <br> Visibilidad: ${Math.round(data.visibility / 1000)} km 🌫️ <br>`;
+
+  infoWeather1.innerHTML = `
+  📍 Ciudad: ${data.name}, ${data.sys.country}<br>
+  🌡️ Temperatura: ${(data.main.temp - 273.15).toFixed(1)} °C<br>
+  🥵 Sensación térmica: ${(data.main.feels_like - 273.15).toFixed(1)} °C<br>
+  🌦️ Clima: ${data.weather[0].description}<br>
+  ☁️ Nubosidad: ${data.clouds.all}%
+  `;
+
+  infoWeather2.innerHTML = `
+  💧 Humedad: ${data.main.humidity}%<br>
+  ⏱️ Presión: ${data.main.pressure} hPa<br>
+  🌊 Nivel del mar: ${data.main.sea_level} hPa<br>
+  👀 Visibilidad: ${data.visibility / 1000} km<br>
+  💨 Velocidad del viento: ${data.wind.speed} m/s<br>
+  🧭 Dirección del viento: ${data.wind.deg}°<br>
+  🌬️ Ráfagas: ${data.wind.gust ?? 'N/D'} m/s
+  `;
 };
 
 // Effect Blur CSS
-document.querySelectorAll('.info-weather').forEach((element) => {
-    element.addEventListener('mouseenter', () => {
-        document.querySelectorAll('.info-weather').forEach((otherElement) => {
-            if (otherElement !== element) {
-                otherElement.classList.add('blurred');
-            }
-        });
-    });
+const cards = document.querySelectorAll('.info-weather');
 
-    element.addEventListener('mouseleave', () => {
-        document.querySelectorAll('.info-weather').forEach((otherElement) => {
-            otherElement.classList.remove('blurred');
-        });
-    });
+cards.forEach(card => {
+  card.addEventListener('mouseenter', () =>
+    cards.forEach(c => c !== card && c.classList.add('blurred'))
+  );
+
+  card.addEventListener('mouseleave', () =>
+    cards.forEach(c => c.classList.remove('blurred'))
+  );
 });
-document.getElementById('infoWeather1').classList.add('active');
-document.getElementById('infoWeather2').classList.add('active');
 
-btn.addEventListener('click', function () {
-  const input = document.getElementById('input-data').value;
-  if (input != false) {
-    if (input) {
-      const delays = [500, 1500, 2200, 2300];
-      const actions = [
-        () => { btn.innerHTML = 'Cargando...'; },
-        () => { infoGeneral.innerHTML = 'Información encontrada exitosamente.'; },
-        () => { getWeather(input); },
-        () => { btn.innerHTML = 'Enviar'; }
-      ];
-      actions.forEach((action, index) => {
-        setTimeout(action, delays[index]);
-      });
-    }
+btn.addEventListener('click', () => {
+  const input = document.getElementById('input-data').value.trim();
 
-  } else {
-    infoGeneral.innerHTML = `Información <span style="color: darkred;">NO</span> encontrada, deberás ingresar una ciudad para averiguarlo.`
-    alert('Por favor, ingresa una ciudad válida.');
+  if (!input) {
+    alert(
+      'Por favor, ingrese una ciudad válida.'
+    );
   }
+
+  btn.innerHTML = 'Cargando...';
+
+  setTimeout(() => {
+    getWeather(input);
+    btn.innerHTML = 'Enviar';
+  }, 1000);
 });
